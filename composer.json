@@ -1,0 +1,29 @@
+{
+    "name": "noorfarooqy/bank_gateway",
+    "description": "Bank Interface",
+    "type": "library",
+    "require": {
+        "laravel/framework": "^10.44",
+        "noorfarooqy/flexcube": "^1.0",
+        "noorfarooqy/noorauth": "^1.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Noorfarooqy\\BankGateway\\": "src/",
+            "Noorfarooqy\\BankGateway\\Controllers\\": "app/Controllers/",
+            "Noorfarooqy\\BankGateway\\Services\\": "app/Services/",
+            "Noorfarooqy\\BankGateway\\Banks\\": "app/Banks/"
+        }
+    },
+    "authors": [
+        {
+            "name": "noorfarooqy",
+            "email": "noor@drongo.vip"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "darkaonline/l5-swagger": "^8.5"
+    }
+}
