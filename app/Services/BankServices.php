@@ -15,7 +15,7 @@ class BankServices extends NoorServices
             'branch_code' => 'nullable|numeric',
         ];
 
-        $this->customValidate($request);
+        $this->customValidate();
 
         if ($this->has_failed) {
             return $this->getResponse();
