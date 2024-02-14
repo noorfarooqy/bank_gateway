@@ -28,6 +28,6 @@ class BankServices extends NoorServices
         $bank_class = config('bankgateway.bank_gateways')[$gateway_key];
         $bank = new $bank_class;
 
-        return $bank->getBalance($data['account_number'], $data['branch_code']);
+        return $bank->getBalance($data['account_number'], isset($data['branch_code']) ? $data['branch_code'] : null);
     }
 }
