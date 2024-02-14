@@ -10,6 +10,7 @@ class BankServices extends NoorServices
     public function getAccountBalance($request)
     {
 
+        $this->request = $request;
         $this->rules = [
             'account_number' => 'required|numeric',
             'branch_code' => 'nullable|numeric',
