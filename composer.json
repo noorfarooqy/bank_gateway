@@ -3,7 +3,7 @@
     "description": "Bank Interface",
     "type": "library",
     "require": {
-        "laravel/framework": "^10.44",
+        "laravel/framework": "^10.0",
         "noorfarooqy/flexcube": "^1.0",
         "noorfarooqy/noorauth": "^1.0"
     },
