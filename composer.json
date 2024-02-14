@@ -25,5 +25,12 @@
     "minimum-stability": "stable",
     "require-dev": {
         "darkaonline/l5-swagger": "^8.5"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Noorfarooqy\\BankGateway\\BankGatewayServiceProvider"
+            ]
+        }
     }
 }
