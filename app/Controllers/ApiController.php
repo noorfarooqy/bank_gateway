@@ -17,6 +17,7 @@ class ApiController extends Controller
     }
     public function getAccountBlockAmounts(Request $request, BankServices $bankServices)
     {
+        return $bankServices->getAccountBlockAmounts($request);
     }
 
     public function postAccountDebitTransaction(Request $request, BankServices $bankServices)

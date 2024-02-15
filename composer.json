@@ -13,7 +13,8 @@
             "Noorfarooqy\\BankGateway\\": "src/",
             "Noorfarooqy\\BankGateway\\Controllers\\": "app/Controllers/",
             "Noorfarooqy\\BankGateway\\Services\\": "app/Services/",
-            "Noorfarooqy\\BankGateway\\Banks\\": "app/Banks/"
+            "Noorfarooqy\\BankGateway\\Banks\\": "app/Banks/",
+            "Noorfarooqy\\BankGateway\\Tests\\": "test/"
         }
     },
     "authors": [
@@ -24,7 +25,9 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
-        "darkaonline/l5-swagger": "^8.5"
+        "darkaonline/l5-swagger": "^8.5",
+        "phpunit/phpunit": "^10.5",
+        "orchestra/testbench": "^8.21"
     },
     "extra": {
         "laravel": {
