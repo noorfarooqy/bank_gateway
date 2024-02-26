@@ -32,7 +32,7 @@ jobs:
           uses: Klemensas/action-autotag@stable
           with:
             tag_prefix: "v"
-            version: ${{env.version_name}}
+            version: v${{env.version_name}}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
