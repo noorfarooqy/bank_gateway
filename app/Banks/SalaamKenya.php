@@ -38,8 +38,9 @@ class SalaamKenya extends Bank
         return $this->getResponse();
     }
 
-    public function getExchangeRate($from, $to, $branch = '000'): object
+    public function getExchangeRate($from, $to, $branch = null): object
     {
+        $branch = $branch ?? "000";
 
         $flexcubeServices = new FlexcubeServices();
         $rate = $flexcubeServices->ExchangeRate($from, $to, $branch);
