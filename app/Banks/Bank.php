@@ -39,7 +39,7 @@ abstract class Bank
 
     abstract public function getTransactionCharge($amount, $transaction_type): float;
 
-    abstract public function blockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = now()->addDay());
+    abstract public function blockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = null);
     abstract public function closeBlockAmount($account_number, $ref);
     abstract public function getAccountAmountBlocks($account_number);
     abstract public function queryAmountBlock($account_number, $block_no);
