@@ -128,6 +128,8 @@ class SalaamKenya extends Bank
                 'description' => $block->{'HOLDDESC'},
             ];
         }
+        $this->setError('', 0);
+        $this->setSuccess('success');
         return $this->getResponse($blocks);
     }
     public function queryAmountBlock($account_number, $block_no)
