@@ -59,7 +59,7 @@ class SalaamKenya extends Bank
             'branch' => $rate->{'BRNCD'},
             'from' => $rate->{'CCY1'},
             'to' => $rate->{'CCY2'},
-            'type' => $rate->{'RATETYPE'},
+            'type' => $rate?->{'RATETYPE'} ?? '',
             'midrate' => $rate->{'MIDRATE'},
             'buyrate' => $rate->{'BUYRATE'},
             'salerate' => $rate->{'SALERATE'},
