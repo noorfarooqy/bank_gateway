@@ -29,8 +29,9 @@ class SalaamKenya extends Bank
             'block_amount' => $balance->{'ACY_BKD_AMT'},
         ];
         Log::info('Bank gateway ');
+        $response = $this->getResponse();
         Log::info(json_encode($response));
-        return $this->getResponse();
+        return $response;
     }
 
     public function getAccountDetails(): object
