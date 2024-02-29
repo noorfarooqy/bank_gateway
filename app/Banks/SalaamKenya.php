@@ -2,6 +2,7 @@
 
 namespace Noorfarooqy\BankGateway\Banks;
 
+use Illuminate\Support\Facades\Log;
 use Noorfarooqy\Flexcube\Services\FlexcubeServices;
 use Noorfarooqy\NoorAuth\Traits\ResponseHandler;
 
@@ -10,13 +11,15 @@ class SalaamKenya extends Bank
     use ResponseHandler;
     public function getBalance($account, $branch = null): object
     {
+        Log::info('Bank gateway ');
         $flexcubeServices = new FlexcubeServices();
         $balance = $flexcubeServices->AccountBalance($account, $branch);
         if (!$balance) {
             $this->setError($flexcubeServices->getMessage());
             return $this->getResponse();
         }
-        return $this->getResponse([
+
+        $response = [
             'account' => $account,
             'ccy' => $balance->{'CCY'},
             'branch' => $balance->{'BRANCH_CODE'},
@@ -24,7 +27,10 @@ class SalaamKenya extends Bank
             'current_balance' => $balance->{'CURBAL'},
             'available_balance' => $balance->{'AVLBAL'},
             'block_amount' => $balance->{'ACY_BKD_AMT'},
-        ]);
+        ];
+        Log::info('Bank gateway ');
+        Log::info(json_encode($response));
+        return $this->getResponse();
     }
 
     public function getAccountDetails(): object
