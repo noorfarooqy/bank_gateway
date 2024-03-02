@@ -159,4 +159,19 @@ class SalaamKenya extends Bank
             'description' => $block->{'HOLDDESC'},
         ]);
     }
+
+    public function createTransaction($amount, $product, $origin, $offset = null)
+    {
+        $flexcubeServices = new FlexcubeServices();
+        $transaction = $flexcubeServices->AccountTransaction($amount, $product, $origin, $offset);
+        if (!$transaction) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        return $this->getResponse([
+            'reference' => $transaction->{'REFERENCE_NO'},
+        ]);
+    }
 }

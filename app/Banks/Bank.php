@@ -43,4 +43,6 @@ abstract class Bank
     abstract public function closeBlockAmount($account_number, $ref);
     abstract public function getAccountAmountBlocks($account_number);
     abstract public function queryAmountBlock($account_number, $block_no);
+
+    abstract public function createTransaction($amount, $product, $origin, $offset = null);
 }
