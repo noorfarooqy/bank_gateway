@@ -170,8 +170,6 @@ class SalaamKenya extends Bank
         }
         $this->setError('', 0);
         $this->setSuccess('success');
-        return $this->getResponse([
-            'reference' => $transaction->{'REFERENCE_NO'},
-        ]);
+        return $this->getResponse($transaction);
     }
 }
