@@ -53,12 +53,12 @@ class SalaamKenya extends Bank
             'name' => $details->{'CUSTNAME'},
             'description' => $details->{'ADESC'},
             'is_frozen' => $details?->{'FROZEN'} == 'Y',
-            'address_one' => $details?->{'ADDRESS_1'},
-            'address_two' => $details?->{'ADDRESS_2'},
-            'address_three' => $details?->{'ADDRESS_3'},
-            'address_four' => $details?->{'ADDRESS_4'},
-            'status' => $details->{'ACCSTAT'},
-            'is_dormant' => $details->{'DORMNT'},
+            'address_one' => $details?->{'ADDRESS_1'} ?? '',
+            'address_two' => $details?->{'ADDRESS_2'} ?? '',
+            'address_three' => $details?->{'ADDRESS_3'} ?? '',
+            'address_four' => $details?->{'ADDRESS_4'} ?? '',
+            'status' => $details->{'ACCSTAT'} ?? '',
+            'is_dormant' => $details->{'DORMNT'} ?? true,
         ];
         $this->setError('', 0);
         $this->setSuccess('success');
