@@ -40,5 +40,6 @@ class ApiController extends Controller
 
     public function postAccountBlocksAmountsClose(Request $request, BankServices $bankServices)
     {
+        return $bankServices->AccountBlocksAmountsClose($request);
     }
 }
