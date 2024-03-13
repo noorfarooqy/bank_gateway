@@ -80,7 +80,7 @@ class BankServices extends NoorServices
 
         $this->rules = [
             'amount' => 'required|numeric',
-            'account' => 'required|exists:onboarded_customers,account_number',
+            'account' => 'required|numeric',
             'expires_at' => 'nullable|date|after:now',
             'block_code' => 'required|string|max:12',
             'block_ref' => 'required|string|max:45',
