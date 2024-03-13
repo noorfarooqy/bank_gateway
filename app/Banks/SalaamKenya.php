@@ -98,7 +98,7 @@ class SalaamKenya extends Bank
             $this->setError($flexcubeServices->getMessage());
             return $this->getResponse();
         }
-        if ($block->{'ACC'} != $account_number) {
+        if ($block?->{'Amount-Blocks-Full'}?->{'ACC'} != $account_number) {
             $this->setError('Account number does not match with block reference given');
             return $this->getResponse();
         }
