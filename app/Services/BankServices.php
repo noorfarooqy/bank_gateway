@@ -84,6 +84,7 @@ class BankServices extends NoorServices
             'expires_at' => 'nullable|date|after:now',
             'block_code' => 'required|string|max:12',
             'block_ref' => 'required|string|max:45',
+            'branch' => 'nullable|numeric'
         ];
         $this->customValidate();
         if ($this->has_failed) {
@@ -95,7 +96,8 @@ class BankServices extends NoorServices
         $gateway_key = config('bankgateway.configured_gateway');
         $bank_class = config('bankgateway.bank_gateways')[$gateway_key];
         $bank = new $bank_class;
+        $branch = $request->branch?? null;
 
-        return $bank->blockAmount($data['account'], $data['amount'], $data['block_code'], $data['block_ref'], $expires_at = $request->expires_at);
+        return $bank->blockAmount($data['account'], $data['amount'], $data['block_code'], $data['block_ref'], $branch, $expires_at = $request->expires_at);
     }
 }

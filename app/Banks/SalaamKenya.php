@@ -102,11 +102,11 @@ class SalaamKenya extends Bank
         }
     }
 
-    public function blockAmount($account, $amount, $hp_code, $ref,$branch = null, $expires_at = null)
+    public function blockAmount($account, $amount, $hp_code, $ref, $branch = null, $expires_at = null)
     {
         $expires_at = $expires_at ?? now()->addDay();
         $flexcubeServices = new FlexcubeServices();
-        $block = $flexcubeServices->AccountBlockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at);
+        $block = $flexcubeServices->AccountBlockAmount($account, $branch ?? substr($account, 0, 3), $amount, $hp_code, $ref, $expires_at);
         if (!$block) {
             $this->setError($flexcubeServices->getMessage());
             return $this->getResponse();
