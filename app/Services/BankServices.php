@@ -72,6 +72,6 @@ class BankServices extends NoorServices
         $bank_class = config('bankgateway.bank_gateways')[$gateway_key];
         $bank = new $bank_class;
 
-        return $bank->getAccountAmountBlocks($data['account_number']);
+        return $bank->getAccountDetails($data['account_number']);
     }
 }
