@@ -150,15 +150,15 @@ class SalaamKenya extends Bank
             return $this->getResponse();
         }
         return $this->getResponse([
-            'account' => $block->{'ACC'},
-            'branch' => $block->{'BRANCH'},
-            'amount' => $block->{'AMT'},
-            'block_no' => $block->{'AMTBLKNO'},
-            'block_type' => $block->{'ABLKTYPE'},
-            'reference_no' => $block->{'REFERENCE_NO'},
-            'hp_code' => $block->{'HPCODE'},
-            'effective_date' => $block->{'EFFDATE'},
-            'description' => $block->{'HOLDDESC'},
+            'account' => $block?->{'Amount-Blocks-Full'}?->{'ACC'},
+            'branch' => $block?->{'Amount-Blocks-Full'}?->{'BRANCH'},
+            'amount' => $block?->{'Amount-Blocks-Full'}?->{'AMT'},
+            'block_no' => $block?->{'Amount-Blocks-Full'}?->{'AMTBLKNO'},
+            'block_type' => $block?->{'Amount-Blocks-Full'}?->{'ABLKTYPE'},
+            'reference_no' => $block?->{'Amount-Blocks-Full'}?->{'REFERENCE_NO'},
+            'hp_code' => $block?->{'Amount-Blocks-Full'}?->{'HPCODE'},
+            'effective_date' => $block?->{'Amount-Blocks-Full'}?->{'EFFDATE'},
+            'description' => $block?->{'Amount-Blocks-Full'}?->{'HOLDDESC'},
         ]);
     }
 
