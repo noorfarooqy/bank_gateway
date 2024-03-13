@@ -34,10 +34,35 @@ class SalaamKenya extends Bank
         return $response;
     }
 
-    public function getAccountDetails(): object
+    public function getAccountDetails($account, $branch = null): object
     {
-        // TODO: Implement getAccountDetails() method.
-        return  $this->getResponse();
+
+        $flexcubeServices = new FlexcubeServices();
+        $branch = $branch ?? substr($account, 0, 3);
+        $details = $flexcubeServices->AccountDetails($account, $branch);
+        if (!$details) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $acc = [
+            'branch' => $details->{'BRN'},
+            'account' => $details->{'ACC'},
+            'cif_no' => $details->{'CUSTNO'},
+            'class' => $details->{'ACCLS'},
+            'ccy' => $details->{'CCY'},
+            'name' => $details->{'CUSTNAME'},
+            'description' => $details->{'ADESC'},
+            'is_frozen' => $details?->{'FROZEN'} == 'Y',
+            'address_one' => $details?->{'ADDRESS_1'},
+            'address_two' => $details?->{'ADDRESS_2'},
+            'address_three' => $details?->{'ADDRESS_3'},
+            'address_four' => $details?->{'ADDRESS_4'},
+            'status' => $details->{'ACCSTAT'},
+            'is_dormant' => $details->{'DORMNT'},
+        ];
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        return  $this->getResponse($acc);
     }
 
     public function getCustomerDetailsByCif(): object

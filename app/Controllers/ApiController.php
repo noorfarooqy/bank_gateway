@@ -14,6 +14,7 @@ class ApiController extends Controller
 
     public function getAccountDetails(Request $request, BankServices $bankServices)
     {
+        return $bankServices->getAccountDetails($request);
     }
     public function getAccountBlockAmounts(Request $request, BankServices $bankServices)
     {
