@@ -74,4 +74,28 @@ class BankServices extends NoorServices
 
         return $bank->getAccountDetails($data['account_number']);
     }
+    public function AccountBlockAmount($request)
+    {
+        $this->request = $request;
+
+        $this->rules = [
+            'amount' => 'required|numeric',
+            'account' => 'required|exists:onboarded_customers,account_number',
+            'expires_at' => 'nullable|date|after:now',
+            'block_code' => 'required|string|max:12',
+            'block_ref' => 'required|string|max:45',
+        ];
+        $this->customValidate();
+        if ($this->has_failed) {
+            return $this->getResponse();
+        }
+
+        $data = $this->validatedData();
+
+        $gateway_key = config('bankgateway.configured_gateway');
+        $bank_class = config('bankgateway.bank_gateways')[$gateway_key];
+        $bank = new $bank_class;
+
+        return $bank->blockAmount($data['account'], $data['amount'], $data['block_code'], $data['block_ref'], $expires_at = $request->expires_at);
+    }
 }
