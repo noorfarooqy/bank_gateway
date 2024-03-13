@@ -99,7 +99,7 @@ class SalaamKenya extends Bank
             return $this->getResponse();
         }
         Log::info('---Block info----');
-        Log::info($block);
+        Log::info(json_encode($block));
         if ($block?->{'ACC'} != $account_number) {
             $this->setError('Account number does not match with block reference given');
             return $this->getResponse();
