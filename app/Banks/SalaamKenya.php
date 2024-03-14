@@ -125,7 +125,7 @@ class SalaamKenya extends Bank
         }
         Log::info('---Block info----');
         Log::info(json_encode($block));
-        if ($block?->{'Amount-Blocks-Full'}?->{'ACC'} != $account_number) {
+        if ($block?->{'ACC'} != $account_number) {
             $this->setError('Account number does not match with block reference given');
             return $this->getResponse();
         }
@@ -175,15 +175,15 @@ class SalaamKenya extends Bank
             return $this->getResponse();
         }
         return $this->getResponse([
-            'account' => $block?->{'Amount-Blocks-Full'}?->{'ACC'},
-            'branch' => $block?->{'Amount-Blocks-Full'}?->{'BRANCH'},
-            'amount' => $block?->{'Amount-Blocks-Full'}?->{'AMT'},
-            'block_no' => $block?->{'Amount-Blocks-Full'}?->{'AMTBLKNO'},
-            'block_type' => $block?->{'Amount-Blocks-Full'}?->{'ABLKTYPE'},
-            'reference_no' => $block?->{'Amount-Blocks-Full'}?->{'REFERENCE_NO'},
-            'hp_code' => $block?->{'Amount-Blocks-Full'}?->{'HPCODE'},
-            'effective_date' => $block?->{'Amount-Blocks-Full'}?->{'EFFDATE'},
-            'description' => $block?->{'Amount-Blocks-Full'}?->{'HOLDDESC'},
+            'account' => $block?->{'ACC'},
+            'branch' => $block?->{'BRANCH'},
+            'amount' => $block?->{'AMT'},
+            'block_no' => $block?->{'AMTBLKNO'},
+            'block_type' => $block?->{'ABLKTYPE'},
+            'reference_no' => $block?->{'REFERENCE_NO'},
+            'hp_code' => $block?->{'HPCODE'},
+            'effective_date' => $block?->{'EFFDATE'},
+            'description' => $block?->{'HOLDDESC'},
         ]);
     }
 
@@ -197,6 +197,18 @@ class SalaamKenya extends Bank
         }
         $this->setError('', 0);
         $this->setSuccess('success');
-        return $this->getResponse($transaction);
+        $transaction_details = [
+            'xref' => $transaction?->{'XREF'},
+            'fccref' => $transaction?->{'FCCREF'},
+            'rate' => $transaction?->{'XRATE'} ?? 1,
+            'amoount' => $transaction?->{'LCYAMT'} ?? '',
+            'offset_amount' => $transaction?->{'OFFSETAMT'} ?? '',
+            'offset_account' => $transaction?->{'OFFSETACC'} ?? '',
+            'offset_ccy' => $transaction?->{'OFFSETCCY'} ?? '',
+            'offset_branch' => $transaction?->{'OFFSETBRN'} ?? '',
+            'trn_date' => $transaction?->{'TXNDATE'} ?? '',
+            'value_date' => $transaction?->{'VALDATE'} ?? '',
+        ];
+        return $this->getResponse($transaction_details);
     }
 }
