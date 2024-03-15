@@ -224,15 +224,13 @@ class SalaamKenya extends Bank
         $this->setSuccess('success');
         $transaction_details = [
             'xref' => $transaction?->{'XREF'},
-            'fccref' => $transaction?->{'FCCREF'},
+            'fccref' => $transaction?->{'CONTREFNO'},
             'rate' => $transaction?->{'XRATE'} ?? 1,
             'amoount' => $transaction?->{'LCYAMT'} ?? '',
             'offset_amount' => $transaction?->{'OFFSETAMT'} ?? '',
             'offset_account' => $transaction?->{'OFFSETACC'} ?? '',
-            'offset_ccy' => $transaction?->{'OFFSETCCY'} ?? '',
-            'offset_branch' => $transaction?->{'OFFSETBRN'} ?? '',
+            'description' => $transaction?->{'TRNCDDESC'} ?? '',
             'trn_date' => $transaction?->{'TXNDATE'} ?? '',
-            'value_date' => $transaction?->{'VALDATE'} ?? '',
         ];
         return $this->getResponse($transaction_details);
     }
