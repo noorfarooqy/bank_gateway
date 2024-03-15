@@ -211,4 +211,42 @@ class SalaamKenya extends Bank
         ];
         return $this->getResponse($transaction_details);
     }
+
+    public function transactionDetails($fcc_reference)
+    {
+        $flexcubeServices = new FlexcubeServices();
+        $transaction = $flexcubeServices->AccountQueryTransaction($fcc_reference);
+        if (!$transaction) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        $transaction_details = [
+            'xref' => $transaction?->{'XREF'},
+            'fccref' => $transaction?->{'FCCREF'},
+            'rate' => $transaction?->{'XRATE'} ?? 1,
+            'amoount' => $transaction?->{'LCYAMT'} ?? '',
+            'offset_amount' => $transaction?->{'OFFSETAMT'} ?? '',
+            'offset_account' => $transaction?->{'OFFSETACC'} ?? '',
+            'offset_ccy' => $transaction?->{'OFFSETCCY'} ?? '',
+            'offset_branch' => $transaction?->{'OFFSETBRN'} ?? '',
+            'trn_date' => $transaction?->{'TXNDATE'} ?? '',
+            'value_date' => $transaction?->{'VALDATE'} ?? '',
+        ];
+        return $this->getResponse($transaction_details);
+    }
+
+    public function reverseTransaction($fcc_reference)
+    {
+        $flexcubeServices = new FlexcubeServices();
+        $transaction = $flexcubeServices->AccountReverseTransaction($fcc_reference);
+        if (!$transaction) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        return $this->getResponse(['fcc_ref' => $fcc_reference]);
+    }
 }

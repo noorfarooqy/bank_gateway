@@ -20,12 +20,6 @@ abstract class Bank
      * @return float
      */
     abstract public function getBalance($account, $branch = null): object;
-
-    /**
-     * Get account details
-     * 
-     * @return array
-     */
     abstract public function getAccountDetails($account, $branch=null): object;
     abstract public function getCustomerDetailsByCif(): object;
     abstract public function getExchangeRate($from, $to, $branch = null): object;
@@ -35,4 +29,6 @@ abstract class Bank
     abstract public function getAccountAmountBlocks($account_number);
     abstract public function queryAmountBlock($account_number, $block_no);
     abstract public function createTransaction($amount, $product, $origin, $offset = null);
+    abstract public function transactionDetails($fcc_reference);
+    abstract public function reverseTransaction($fcc_reference);
 }

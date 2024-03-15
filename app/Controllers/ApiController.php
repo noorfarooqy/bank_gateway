@@ -42,4 +42,14 @@ class ApiController extends Controller
     {
         return $bankServices->AccountBlocksAmountsClose($request);
     }
+
+    public function getTransactionStatus(Request $request, BankServices $bankServices)
+    {
+        return $bankServices->AccountBlocksAmountsClose($request);
+    }
+
+    public function postTransactionReversal(Request $request, BankServices $bankServices)
+    {
+        return $bankServices->AccountBlocksAmountsClose($request);
+    }
 }
