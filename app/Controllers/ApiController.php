@@ -45,11 +45,11 @@ class ApiController extends Controller
 
     public function getTransactionStatus(Request $request, BankServices $bankServices)
     {
-        return $bankServices->AccountBlocksAmountsClose($request);
+        return $bankServices->getTransactionStatus($request);
     }
 
     public function postTransactionReversal(Request $request, BankServices $bankServices)
     {
-        return $bankServices->AccountBlocksAmountsClose($request);
+        return $bankServices->reverseTransaction($request);
     }
 }
