@@ -8,5 +8,10 @@ return [
     'bank_gateways' => [
         'sbk' => SalaamKenya::class
     ],
+    //Class balances for each account class
+    'class_balances' => [
+        'classes' => [],
+        'limits' => [],
+    ],
 
 ];

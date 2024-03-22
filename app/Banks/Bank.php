@@ -21,7 +21,7 @@ abstract class Bank
      */
     abstract public function getBalance($account, $branch = null): object;
     abstract public function getAccountDetails($account, $branch=null): object;
-    abstract public function getCustomerDetailsByCif(): object;
+    abstract public function getCustomerDetailsByCif($cif): object;
     abstract public function getExchangeRate($from, $to, $branch = null): object;
     abstract public function getTransactionCharge($amount, $transaction_type): float;
     abstract public function blockAmount($account, $branch, $amount, $hp_code, $ref, $expires_at = null);

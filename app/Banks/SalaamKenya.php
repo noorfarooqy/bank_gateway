@@ -65,11 +65,6 @@ class SalaamKenya extends Bank
         return  $this->getResponse($acc);
     }
 
-    public function getCustomerDetailsByCif(): object
-    {
-        return $this->getResponse();
-    }
-
     public function getExchangeRate($from, $to, $branch = null): object
     {
         $branch = $branch ?? "000";
@@ -246,5 +241,40 @@ class SalaamKenya extends Bank
         $this->setError('', 0);
         $this->setSuccess('success');
         return $this->getResponse(['fcc_ref' => $fcc_reference]);
+    }
+
+    public function getCustomerDetailsByCif($customer_cif): object
+    {
+        $flexcubeServices = new FlexcubeServices();
+        $transaction = $flexcubeServices->CustomerDetails($customer_cif);
+        if (!$transaction) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        $transaction_details = [
+            'cif' => $transaction?->{'CUSTOMER_ID'},
+            'email' => $transaction?->{'EMAIL'},
+            'first_name' => $transaction?->{'FIRST_NAME'} ?? 1,
+            'last_name' => $transaction?->{'LAST_NAME'} ?? '',
+            'gender' => $transaction?->{'GENDER'} ?? '',
+            'title' => $transaction?->{'TITLE'} ?? '',
+            'short_name' => $transaction?->{'SHORT_NAME'} ?? '',
+            'address_line_1' => $transaction?->{'ADDRESS_LINE1'} ?? '',
+            'address_line_2' => $transaction?->{'ADDRESS_LINE2'} ?? '',
+            'address_line_3' => $transaction?->{'ADDRESS_LINE3'} ?? '',
+            'address_line_4' => $transaction?->{'ADDRESS_LINE4'} ?? '',
+            'address_country' => $transaction?->{'ADDRESS_COUNTRY'} ?? '',
+            'mobile_number' => $transaction?->{'MOBILE_NO'} ?? '',
+            'is_verified' => $transaction?->{'IS_VERIFIED'} ?? '',
+            'nationality' => $transaction?->{'NAITONALITY'} ?? '',
+            'unique_id_name' => $transaction?->{'UNIQUE_ID_NAME'} ?? '',
+            'unique_id_value' => $transaction?->{'UNIQUE_ID_VALUE'} ?? '',
+            'created_at' => $transaction?->{'CREATED_AT'} ?? '',
+            'customer_type' => $transaction?->{'CUSTOMER_TYPE'} ?? '',
+            'customer_category' => $transaction?->{'CATEGORY'} ?? '',
+        ];
+        return $this->getResponse($transaction_details);
     }
 }
