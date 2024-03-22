@@ -277,4 +277,39 @@ class SalaamKenya extends Bank
         ];
         return $this->getResponse($transaction_details);
     }
+
+    public function getCustomerAccounts($customer_cif, $ccy = null): object
+    {
+
+        $flexcubeServices = new FlexcubeServices();
+        $customer_accounts = $flexcubeServices->CustomerAccounts($customer_cif);
+        if (!$customer_accounts) {
+            $this->setError($flexcubeServices->getMessage());
+            return $this->getResponse();
+        }
+        $accounts = $customer_accounts?->{'Stvws-Stdaccqy'} ?? [];
+
+        if (!is_array($accounts) && $accounts != null) {
+            $accounts = [$accounts];
+        }
+        $cust_accounts = [];
+        foreach ($accounts as $key => $account) {
+            if ($ccy != null && $account?->{'CCY'} != $ccy) {
+                continue;
+            }
+            $cust_accounts[] = [
+                'account_type' => $account?->{'ACCOUNT_TYPE'},
+                'account_status' => $account?->{'ACC_STATUS'},
+                'account_desc' => $account?->{'AC_DESC'},
+                'account_open_date' => $account?->{'AC_OPEN_DATE'},
+                'account_branch' => $account?->{'BRANCH_CODE'},
+                'account_ccy' => $account?->{'CCY'},
+                'account_number' => $account?->{'CUST_AC_NO'},
+            ];
+        }
+        $this->setError('', 0);
+        $this->setSuccess('success');
+
+        return $this->getResponse($cust_accounts);
+    }
 }
