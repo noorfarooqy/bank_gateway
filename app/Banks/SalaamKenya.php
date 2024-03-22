@@ -253,6 +253,7 @@ class SalaamKenya extends Bank
         }
         $this->setError('', 0);
         $this->setSuccess('success');
+        $transaction = $transaction?->{'Stvws-Stdcifqy'};
         $transaction_details = [
             'cif' => $transaction?->{'CUSTOMER_ID'},
             'email' => $transaction?->{'EMAIL'},
