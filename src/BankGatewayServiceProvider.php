@@ -13,7 +13,7 @@ class BankGatewayServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->publishes([
             __DIR__ . '/../config/bankgateway.php' => config_path('bankgateway.php'),
-        ], 'bankgateway-config');
+        ], 'bg-config');
     }
     public function register()
     {
