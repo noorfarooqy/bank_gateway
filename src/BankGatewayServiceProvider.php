@@ -3,6 +3,7 @@
 namespace Noorfarooqy\BankGateway;
 
 use Illuminate\Support\ServiceProvider;
+use Noorfarooqy\BankGateway\Commands\SendMonthlyBankStatement;
 
 class BankGatewayServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,10 @@ class BankGatewayServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/bankgateway.php' => config_path('bankgateway.php'),
         ], 'bg-config');
+        $this->commands([
+            SendMonthlyBankStatement::class,
+        ]);
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bg');
     }
     public function register()
     {

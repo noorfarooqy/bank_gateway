@@ -4,8 +4,9 @@
     "type": "library",
     "require": {
         "laravel/framework": "^10.0",
-        "noorfarooqy/flexcube": "^1.0",
-        "noorfarooqy/noorauth": "^1.0"
+        "noorfarooqy/noorauth": "^1.0",
+        "noorfarooqy/flexcube": "dev-main",
+        "noorfarooqy/easy_notifications": "^1.0"
     },
     "license": "MIT",
     "autoload": {
@@ -13,6 +14,7 @@
             "Noorfarooqy\\BankGateway\\": "src/",
             "Noorfarooqy\\BankGateway\\Controllers\\": "app/Controllers/",
             "Noorfarooqy\\BankGateway\\Services\\": "app/Services/",
+            "Noorfarooqy\\BankGateway\\Commands\\": "app/Commands/",
             "Noorfarooqy\\BankGateway\\Banks\\": "app/Banks/",
             "Noorfarooqy\\BankGateway\\Tests\\": "test/"
         }
@@ -34,6 +36,12 @@
             "providers": [
                 "Noorfarooqy\\BankGateway\\BankGatewayServiceProvider"
             ]
+        }
+    },
+    "repositories": {
+        "local": {
+            "type": "path",
+            "url": "../flexcube"
         }
     }
 }

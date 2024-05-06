@@ -52,4 +52,9 @@ class ApiController extends Controller
     {
         return $bankServices->reverseTransaction($request);
     }
+
+    public function getTransactionStatement(Request $request, BankServices $bankServices)
+    {
+        return $bankServices->customerBankStatement($request);
+    }
 }

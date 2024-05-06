@@ -3,7 +3,9 @@
 namespace Noorfarooqy\BankGateway\Banks;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Noorfarooqy\Flexcube\Services\FlexcubeServices;
+use Noorfarooqy\Flexcube\Services\ReportsServices;
 use Noorfarooqy\NoorAuth\Traits\ResponseHandler;
 
 class SalaamKenya extends Bank
@@ -62,7 +64,7 @@ class SalaamKenya extends Bank
         ];
         $this->setError('', 0);
         $this->setSuccess('success');
-        return  $this->getResponse($acc);
+        return $this->getResponse($acc);
     }
 
     public function getExchangeRate($from, $to, $branch = null): object
@@ -312,5 +314,45 @@ class SalaamKenya extends Bank
         $this->setSuccess('success');
 
         return $this->getResponse($cust_accounts);
+    }
+
+    public function getCustomerAccountStatement($account_number, $start_date, $end_date, $format = 'pdf', $json = true)
+    {
+        $reportServices = new ReportsServices();
+
+        $statement = $reportServices->AccountStatementReport($account_number, $start_date, $end_date, $format);
+        if (!$statement) {
+            $this->setError($reportServices->getMessage());
+            return $json ? $this->getResponse() : false;
+        }
+
+        $base64_file = $statement?->runReportReturn;
+        info('----REPOIRT RESPOSE-----');
+        // Log::info(json_encode($base64_file));
+        if ($base64_file == null) {
+            $this->setError(env('APP_DEBUG') ? json_encode($statement) : 'Statement response type is not valid');
+            return $json ? $this->getResponse() : false;
+        }
+        $decoded_file = base64_decode($base64_file?->reportBytes);
+        if ($decoded_file == null) {
+            $this->setError(env('APP_DEBUG') ? json_encode($base64_file) : 'Decoded statement response type is not valid');
+            return $json ? $this->getResponse() : false;
+        }
+        $statement_name = $account_number . '_' . str_replace('/', '_', $start_date) . '_' . str_replace('/', '_', $end_date) . '.' . $format;
+        $path = 'statements/';
+        Storage::disk('public')->put($path . $statement_name, $decoded_file);
+        Storage::disk('public')->put($statement_name . '.txt', json_encode($base64_file));
+
+        $this->setError('', 0);
+        $this->setSuccess('success');
+        $statement = [
+            'statement_link' => $json ? Storage::disk('public')->url($path . $statement_name) : Storage::disk('public')->path($path . $statement_name),
+            'from_date' => $start_date,
+            'to_date' => $end_date,
+            'account_number' => $account_number
+        ];
+        return $json ? $this->getResponse($statement) : $statement;
+
+
     }
 }

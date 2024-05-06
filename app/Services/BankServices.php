@@ -168,4 +168,29 @@ class BankServices extends NoorServices
         return $bank->reverseTransaction($data['reference']);
 
     }
+
+    public function customerBankStatement($request)
+    {
+        $this->request = $request;
+
+        $this->rules = [
+            'account_number' => 'required|numeric',
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
+            'format' => 'required|string|in:pdf,csv,xml',
+        ];
+        $this->customValidate();
+        if ($this->has_failed) {
+            return $this->getResponse();
+        }
+
+        $data = $this->validatedData();
+
+        $gateway_key = config('bankgateway.configured_gateway');
+        $bank_class = config('bankgateway.bank_gateways')[$gateway_key];
+        $bank = new $bank_class;
+
+        return $bank->getCustomerAccountStatement($data['account_number'], $data['from_date'], $data['to_date'], $data['format']);
+        
+    }
 }
