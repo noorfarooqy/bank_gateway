@@ -13,5 +13,12 @@ return [
         'classes' => [],
         'limits' => [],
     ],
+    'reports' => [
+        'statement' => [],
+        'static' => [
+            'from_date' => env('BG_REPORT_STATIC_FROM_DATE', ''),
+
+        ],
+    ],
 
 ];

@@ -4,9 +4,11 @@ namespace Noorfarooqy\BankGateway\Banks;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Mpdf\Mpdf;
 use Noorfarooqy\Flexcube\Services\FlexcubeServices;
 use Noorfarooqy\Flexcube\Services\ReportsServices;
 use Noorfarooqy\NoorAuth\Traits\ResponseHandler;
+use Illuminate\Support\Str;
 
 class SalaamKenya extends Bank
 {
@@ -341,7 +343,22 @@ class SalaamKenya extends Bank
         $statement_name = $account_number . '_' . str_replace('/', '_', $start_date) . '_' . str_replace('/', '_', $end_date) . '.' . $format;
         $path = 'statements/';
         Storage::disk('public')->put($path . $statement_name, $decoded_file);
-        Storage::disk('public')->put($statement_name . '.txt', json_encode($base64_file));
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4-L',
+            'orientation' => 'L'
+        ]);
+        $password = Str::random(4) . random_int(100, 999);
+        $mpdf->SetProtection(['copy', 'print'], $password, $password);
+        $page_coount = $mpdf->setSourceFile(Storage::disk('public')->path($path . $statement_name));
+        for ($i = 1; $i <= $page_coount; $i++) {
+            $import_page = $mpdf->importPage($i);
+            $mpdf->useTemplate($import_page);
+            $mpdf->AddPage();
+        }
+        $mpdf->Output(Storage::disk('public')->path($path . $statement_name), 'F');
+        // 
+        // Storage::disk('public')->put($statement_name . '.txt', json_encode($base64_file));
 
         $this->setError('', 0);
         $this->setSuccess('success');
@@ -349,10 +366,49 @@ class SalaamKenya extends Bank
             'statement_link' => $json ? Storage::disk('public')->url($path . $statement_name) : Storage::disk('public')->path($path . $statement_name),
             'from_date' => $start_date,
             'to_date' => $end_date,
-            'account_number' => $account_number
+            'account_number' => $account_number,
+            'password' => $password
         ];
         return $json ? $this->getResponse($statement) : $statement;
 
+    }
 
+    public function getCustomersListReport($start_date, $end_date, $json = true)
+    {
+        $reportServices = new ReportsServices();
+
+        $customers = $reportServices->CustomersListReport($start_date, $end_date);
+        if (!$customers) {
+            $this->setError($reportServices->getMessage());
+            return $json ? $this->getResponse() : false;
+        }
+
+        $base64_file = $customers?->runReportReturn;
+        info('----REPOIRT RESPOSE-----');
+        // Log::info(json_encode($base64_file));
+        if ($base64_file == null) {
+            $this->setError(env('APP_DEBUG') ? json_encode($customers) : 'Statement response type is not valid');
+            return $json ? $this->getResponse() : false;
+        }
+        $decoded_file = base64_decode($base64_file?->reportBytes);
+        if ($decoded_file == null) {
+            $this->setError(env('APP_DEBUG') ? json_encode($base64_file) : 'Decoded statement response type is not valid');
+            return $json ? $this->getResponse() : false;
+        }
+        $customers_name = 'customers_' . str_replace('/', '_', $start_date) . '_' . str_replace('/', '_', $end_date) . '.csv';
+        $path = 'customers/';
+        Storage::disk('public')->put($path . $customers_name, $decoded_file);
+
+        $this->setError('', 0);
+        $this->setSuccess('success');
+
+        $customers_response = [
+            'file_path' => $path . $customers_name,
+            'type' => 'csv',
+            'from_date' => $start_date,
+            'to_date' => $end_date
+        ];
+
+        return $json ? $this->getResponse($customers_response) : $customers_response;
     }
 }

@@ -5,8 +5,10 @@
     "require": {
         "laravel/framework": "^10.0",
         "noorfarooqy/noorauth": "^1.0",
-        "noorfarooqy/flexcube": "dev-main",
-        "noorfarooqy/easy_notifications": "^1.0"
+        "noorfarooqy/flexcube": "^1.0.0",
+        "noorfarooqy/easy_notifications": "^1.0.0",
+        "mpdf/mpdf": "^8.2",
+        "maatwebsite/excel": "^3.1"
     },
     "license": "MIT",
     "autoload": {
@@ -36,12 +38,6 @@
             "providers": [
                 "Noorfarooqy\\BankGateway\\BankGatewayServiceProvider"
             ]
-        }
-    },
-    "repositories": {
-        "local": {
-            "type": "path",
-            "url": "../flexcube"
         }
     }
 }

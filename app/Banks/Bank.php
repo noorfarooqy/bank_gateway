@@ -34,4 +34,5 @@ abstract class Bank
     abstract public function reverseTransaction($fcc_reference);
 
     abstract public function getCustomerAccountStatement($account_number, $start_date, $end_date, $format = 'pdf');
+    abstract public function getCustomersListReport($start_date, $end_date);
 }
